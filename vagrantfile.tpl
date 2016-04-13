@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  CURRENT_DIR = Dir.pwd
+  CURRENT_DIR = File.dirname(__FILE__) 
 
   config.ssh.shell = "sh"
   config.ssh.username = "docker"
@@ -9,9 +9,9 @@ Vagrant.configure("2") do |config|
 
   # Use NFS folder sync if env variable B2D_NFS_SYNC is set
   if ENV['B2D_NFS_SYNC']
-    config.vm.synced_folder ".", CURRENT_DIR, type: "nfs", mount_options: ["nolock", "vers=3", "udp"], id: "nfs-sync"
+    config.vm.synced_folder CURRENT_DIR, CURRENT_DIR, type: "nfs", mount_options: ["nolock", "vers=3", "udp"], id: "nfs-sync"
   else
-    config.vm.synced_folder ".", CURRENT_DIR
+    config.vm.synced_folder CURRENT_DIR, CURRENT_DIR
   end
 
   config.vm.provider "virtualbox" do |v, override|
@@ -28,8 +28,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "[ ! -d /vagrant ] && ln -s #{CURRENT_DIR} /vagrant || true"
 
   # Add bootlocal support
-  if File.file?('./bootlocal.sh')
-    config.vm.provision "shell", path: "bootlocal.sh", run: "always"
+  if File.file?(File.join(CURRENT_DIR, 'bootlocal.sh')
+    config.vm.provision "shell", path: File.join(CURRENT_DIR, 'bootlocal.sh', run: "always"
   end
 
 end
