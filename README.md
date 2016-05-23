@@ -30,6 +30,13 @@ config.vm.synced_folder ".", "/vagrant", type: "rsync"
     $ vagrant up
     ```
 
+    If you have a custom Docker Host and is located in a different folder add the following configuration in the Vagrantfile
+
+    ```bash
+    $ config.vm.synced_folder "../", "/vagrant", type: "nfs", mount_options: ["nolock", "vers=3", "udp"], id: "nfs-sync"
+    ```
+
+
 * Network considerations :
   * By default, we use a NAT interfaces, which have its ports 2375 and 2376 (Docker IANA ports) forwarded to the loopback (localhost) of your physical host.
   * Also, we provide a private network that allow direct-IP exchange from your host. This is less portable but easier to use. This usage come from the official docker-machine system.
